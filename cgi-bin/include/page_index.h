@@ -48,7 +48,6 @@ static char *PAGE_INDEX =
     "                    return '<title>';\n"
     "                }\n"
     "            }).then(body => {\n"
-    "                // TODO: Support Markdown\n"
     "                document.getElementById('post-body').textContent = body;\n"
     "                renderMarkdown();\n"
     "            });\n"
