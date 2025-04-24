@@ -24,7 +24,7 @@ The commands are as follows:
 - `4` - Return a list of comment ids for a user's post by another (or the same) user
    1. Poster's user name
    2. Post Id
-- `6` - Return the version of the cgi-bin you're using. No args
+- `5` - Return the version of the cgi-bin you're using. No args
 
 ## Testing
 
