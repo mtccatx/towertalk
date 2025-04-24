@@ -3,3 +3,6 @@
 *.o
 *.d
 obj/
+
+# Packaging (Create a temp folder)
+towertalk-*/
