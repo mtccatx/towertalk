@@ -4,6 +4,23 @@
 
 A small forum-style website for Moontower Computer Club members to post about projects and comment/collaborate.
 
+### Installing
+
+1. Download latest release. Will have the following inside:
+   - Folder with HTML/JS/CSS called `towertalk/`
+   - Binary: `towertalk.bin`
+2. Install `towertalk.bin` to `~/cgi-bin/`
+3. Install the `towertalk/` folder to `~/public`
+4. Create a password for using your towertalk
+   - Create the folder: `mkdir -p ~/.config/towertalk`
+   - Run `openssl passwd -6`
+   - This will give you a salt and hashed password in the form: `$6$<salt>$<hash>`
+   - Save these under `~/.config/towertalk/password.salt` and `~/.config/towertalk/password.hash`
+      * Make sure to add a `\n` at the end!
+      * Recommended:
+         + `echo "$6$<generated salt>" > ~/.config/towertalk/password.salt`
+         + `echo "<generated hash>" > ~/.config/towertalk/password.hash`
+
 ### How to Use
 
 #### Posting
@@ -45,20 +62,3 @@ Under the hood, this will call the `towertalk.bin` file in the *commenter's* cgi
    + `<number>` is simply there to give a unique file name in case there are multiple files. It's just a counter
 
 Comments can be viewed under the original post on its page and all the posts can be viewed under your main towertalk page.
-
-### Installing
-
-1. Download latest release. Will have the following inside:
-   - Folder with HTML/JS/CSS called `towertalk/`
-   - Binary: `towertalk.bin`
-2. Install `towertalk.bin` to `~/cgi-bin/`
-3. Install the `towertalk/` folder to `~/public`
-4. Create a password for using your towertalk
-   - Create the folder: `mkdir -p ~/.config/towertalk`
-   - Run `openssl passwd -6`
-   - This will give you a salt and hashed password in the form: `$6$<salt>$<hash>`
-   - Save these under `~/.config/towertalk/password.salt` and `~/.config/towertalk/password.hash`
-      * Make sure to add a `\n` at the end!
-      * Recommended:
-         + `echo "$6$<generated salt>" > ~/.config/towertalk/password.salt`
-         + `echo "<generated hash>" > ~/.config/towertalk/password.hash`
