@@ -7,9 +7,12 @@ In case of API or theme changes, all of the `index.html` files for every post ha
 To update yours, take the current `page_index.h` and run it through this sed command:
 
 ```bash
-sed -n '/^static char \*PAGE_INDEX =/,/^";/p' cgi-bin/include/page_index.h \
-    | sed '1d;$d;s/^ *"//;s/\\n"$//;s/"$//;s/\\"/"/g;s/\\\\/\\/g' \
-    > /tmp/index.html
+sed '1,/static char \*PAGE_INDEX =/d; s#\" VERSION \"#'\'$(
+            sed -n 's/^#define VERSION\s*\"\([^\"]*\)\"/\1/p' cgi-bin/include/version.h \
+                | sed 's/\/\/.*//' | sed 's/^[ \t]*//;s/[ \t]*$//'
+        )\''#; s/^[ \t]*\"//g; s/\\n\"$//g; s/\\n\";$//g; s/\\\\/\\/g' \
+            cgi-bin/include/page_index.h \
+                > /tmp/index.html
 ```
 
 Then run this command to update all your posts:

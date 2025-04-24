@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <version.h>
+
 static char *PAGE_INDEX =
     "<!-- Post page for towertalk -->\n"
     "<!DOCTYPE html>\n"
@@ -39,6 +41,7 @@ static char *PAGE_INDEX =
     "        <!-- Pull content and handle submission and what not -->\n"
     "        <script>\n"
     "            // Get info about the current user and post\n"
+    "            const version = " VERSION ";\n"
     "            const path = window.location.pathname;\n"
     "            const match = path.match(/^\\/~([^/]+)\\/towertalk\\/posts\\/([0-9]+)/);\n"
     "            const username = match ? match[1] : '<user>';\n"
@@ -56,8 +59,8 @@ static char *PAGE_INDEX =
     "                }\n"
     "            }).then(title => {\n"
     "                document.getElementById('post-title').textContent =\n"
-    "                    `Post by ${username} - ${title}`;\n"
-    "                document.title = `Tower Talk Post by ${username} - ${title}`;\n"
+    "                    `Post (${version}) by ${username} - ${title}`;\n"
+    "                document.title = `Tower Talk ${version} Post by ${username} - ${title}`;\n"
     "            });\n"
     "            fetch(\n"
     "        `https://moontowercomputer.club/~${username}/towertalk/posts/${post_id}/BODY.md`\n"
@@ -65,7 +68,7 @@ static char *PAGE_INDEX =
     "                if (response.status == 200) {\n"
     "                    return response.text();\n"
     "                } else {\n"
-    "                    return '<title>';\n"
+    "                    return '<body>';\n"
     "                }\n"
     "            }).then(body => {\n"
     "                document.getElementById('post-body').textContent = body;\n"

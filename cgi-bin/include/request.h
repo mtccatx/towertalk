@@ -33,6 +33,7 @@ typedef enum {
     REQCMD_POSTS,
     REQCMD_USERS,
     REQCMD_COMMENTS,
+    REQCMD_VERSION,
     REQCMD_COUNT
 } req_cmd_t;
 

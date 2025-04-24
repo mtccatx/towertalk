@@ -31,7 +31,8 @@
             const path = window.location.pathname;
             const match = path.match(/^\/~([^/]+)\//);
             const username = match ? match[1] : "<user>";
-            document.title = `Tower Talk - ${username}`;
+            const version = 'v0'; // Match ../cgi-bin/include/version.h
+            document.title = `Tower Talk ${version} - ${username}`;
             document.getElementById('top-txt').textContent = `Posts by ${username}`
 
             // Call into cgi-bin file to get a list of posts

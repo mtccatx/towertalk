@@ -14,7 +14,8 @@ size_t REQCMD_NUM_ARGS[REQCMD_COUNT] = {
     5,
     0,
     0,
-    2
+    2,
+    0
 };
 
 // -------- Private Data --------

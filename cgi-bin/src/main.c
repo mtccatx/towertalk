@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <version.h>
+#include <cmd.h>
 #include <request.h>
 
 // -------- Private Fn Protos --------
@@ -196,6 +198,10 @@ static int run_cmd(const req_t *const ref_req) {
                 }
                 exit(0);
             }
+            break;
+        case REQCMD_VERSION:
+            request__respond(RESPCODE_OK, VERSION);
+            exit(0);
             break;
         default:
             request__respond(RESPCODE_CLNTERR_BAD_REQ, "Invalid command requested.");
