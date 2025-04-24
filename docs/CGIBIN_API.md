@@ -14,10 +14,11 @@ The commands are as follows:
    1. Post title
    2. Post body
    3. Poster's user password (`~/.config/towertalk`)
-- `1` - Make a comment on a post
-   1. Post Id
-   2. Comment body
-   3. Commenter's user password (under `~/.config/towertalk`)
+- `1` - Make a comment on a post (called on commenter's cgi-bin)
+   1. Poster's user name
+   2. Post Id
+   3. Comment body
+   4. Commenter's user password (under `~/.config/towertalk`)
 - `2` - Return list of post titles and indices for the host user. No args
 - `3` - Return a list of users on the system. Used by front-end for finding comments
 - `4` - Return a list of comments for a user's post by another (or the same) user

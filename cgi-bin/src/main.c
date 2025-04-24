@@ -83,9 +83,11 @@ static int run_cmd(const req_t *const ref_req) {
             cmd_err = cmd__make_post(&post);
             break;
         case REQCMD_MAKE_COMMENT:
-            comment.post_id = ref_req->args[0];
-            comment.body = ref_req->args[1];
-            comment.pword = ref_req->args[2];
+            comment.post_user = ref_req->args[0];
+            comment.post_id = ref_req->args[1];
+            comment.body = ref_req->args[2];
+            comment.pword = ref_req->args[3];
+            comment.cmnt_id = ref_req->args[4];
             cmd_err = cmd__make_comment(&comment);
             break;
         case REQCMD_POSTS:

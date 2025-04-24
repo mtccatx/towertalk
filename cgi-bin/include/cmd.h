@@ -20,9 +20,11 @@ typedef struct {
 
 // Represent the data needed to make a comment
 typedef struct {
+    char *post_user;
     char *post_id;
     char *body;
     char *pword;
+    char *cmnt_id;
 } cmd_comment_t;
 
 // Represent posts to retrieve from system

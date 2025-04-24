@@ -11,7 +11,7 @@
 
 size_t REQCMD_NUM_ARGS[REQCMD_COUNT] = {
     3,
-    3,
+    5,
     0,
     0,
     3

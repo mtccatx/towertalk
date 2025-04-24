@@ -6,6 +6,9 @@
 #include <stddef.h>
 #include <sys/stat.h>
 #include <ftw.h>
+#ifndef __USE_MISC
+#define __USE_MISC
+#endif
 #include <dirent.h>
 #include <auth.h>
 #include <page_index.h>
@@ -124,6 +127,100 @@ cmd_err_t cmd__make_post(const cmd_post_t *const post_data) {
 }
 
 cmd_err_t cmd__make_comment(const cmd_comment_t *const comment_data) {
+    if (!auth__validate_user(comment_data->pword)) {
+        return CMDERR_AUTH;
+    }
+
+    char *username = getenv("USER");
+    if (!username) {
+        return CMDERR_INTERNAL;
+    }
+    char fname[BUFF_SIZE] = "";
+
+
+
+    // Create the containing folders if they don't exist
+    struct stat st = { 0 };
+    int fname_size = sprintf(fname, "/home/%s/public/", username);
+    if (fname_size < 0 || fname_size >= BUFF_SIZE) {
+        return CMDERR_INTERNAL;
+    }
+    if (stat(fname, &st) == -1) {
+        if (mkdir(fname, DIR_PERMISSION) == -1) {
+            return CMDERR_INTERNAL;
+        }
+    }
+    fname_size = sprintf(fname, "/home/%s/public/towertalk", username);
+    if (fname_size < 0 || fname_size >= BUFF_SIZE) {
+        return CMDERR_INTERNAL;
+    }
+    if (stat(fname, &st) == -1) {
+        if (mkdir(fname, DIR_PERMISSION) == -1) {
+            return CMDERR_INTERNAL;
+        }
+    }
+    fname_size = sprintf(fname, "/home/%s/public/towertalk/comments", username);
+    if (fname_size < 0 || fname_size >= BUFF_SIZE) {
+        return CMDERR_INTERNAL;
+    }
+    if (stat(fname, &st) == -1) {
+        if (mkdir(fname, DIR_PERMISSION) == -1) {
+            return CMDERR_INTERNAL;
+        }
+    }
+    fname_size = sprintf(
+        fname, "/home/%s/public/towertalk/comments/%s", username, comment_data->post_user
+    );
+    if (fname_size < 0 || fname_size >= BUFF_SIZE) {
+        return CMDERR_INTERNAL;
+    }
+    if (stat(fname, &st) == -1) {
+        if (mkdir(fname, DIR_PERMISSION) == -1) {
+            return CMDERR_INTERNAL;
+        }
+    }
+    fname_size = sprintf(
+        fname,
+        "/home/%s/public/towertalk/comments/%s/%s",
+        username, comment_data->post_user, comment_data->post_id
+    );
+    if (fname_size < 0 || fname_size >= BUFF_SIZE) {
+        return CMDERR_INTERNAL;
+    }
+    if (stat(fname, &st) == -1) {
+        if (mkdir(fname, DIR_PERMISSION) == -1) {
+            return CMDERR_INTERNAL;
+        }
+    }
+    fname_size = sprintf(
+        fname,
+        "/home/%s/public/towertalk/comments/%s/%s/",
+        username, comment_data->post_user, comment_data->post_id
+    );
+    if (fname_size < 0 || fname_size >= BUFF_SIZE) {
+        return CMDERR_INTERNAL;
+    }
+    if (stat(fname, &st) == -1) {
+        if (mkdir(fname, DIR_PERMISSION) == -1) {
+            return CMDERR_INTERNAL;
+        }
+    }
+
+    // Save body
+    fname_size = sprintf(
+        fname,
+        "/home/%s/public/towertalk/comments/%s/%s/COMMENT.%s.md",
+        username, comment_data->post_user, comment_data->post_id, comment_data->cmnt_id
+    );
+    if (fname_size < 0 || fname_size >= BUFF_SIZE) {
+        return CMDERR_INTERNAL;
+    }
+    FILE *file = fopen(fname, "w");
+    if (!file) {
+        return CMDERR_INTERNAL;
+    }
+    fprintf(file, "%s\n", comment_data->body);
+    fclose(file);
     return CMDERR_NONE;
 }
 
