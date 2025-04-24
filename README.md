@@ -11,7 +11,7 @@ A small forum-style website for Moontower Computer Club members to post about pr
 To post a new project/entry:
 
 - Visit your main towertalk page via `https://moontowercomputer.club/~<your username>/towertalk`
-- Click "New Post"
+- Go to where it says "New Post"
 - Enter a title, Markdown body, and your password (See "Installing")
 - Click submit
 
@@ -33,7 +33,7 @@ Once a post exists and a user can visit it, that user can contribute to the conv
 To add a comment:
 
 - Visit the post you want to comment on: `https://moontowercomputer.club/~<poster's username>/towertalk/posts/<id>`
-- Click "Add Comment"
+- Go to where it says "Leave Comment"
 - Enter a Markdown body, your username, and your password
 - Click submit
 
