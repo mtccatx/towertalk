@@ -1,0 +1,91 @@
+<!-- Post loading home page for towertalk -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <h1 id = 'top-txt'> Posts </h1>
+    </head>
+    <body>
+        <!-- Content -->
+        <ul id = 'post-list'> Posts </ul>
+        <form id = 'new-post'>
+            <h2> New Post </h2>
+            <label>
+                Title:
+                <input type = 'text' name = 'post_title' />
+            </label>
+            <br>
+            <label>
+                Body:
+                <textarea name = 'post_body'  rows="4" cols="50">Markdown here!</textarea>
+            </label>
+            <br>
+            <label>
+                Password:
+                <input type = 'password' name = 'post_pword' />
+            </label>
+            <br>
+            <button type = 'submit'> Submit </button>
+        </form>
+
+        <!-- Pull content and handle submission and what not -->
+        <script type = 'text/Javascript'>
+            // Set the title to include the user who you loaded
+            const path = window.location.pathname;
+            const match = path.match(/^\/~([^/]+)\//);
+            const username = match ? match[1] : "<user>";
+            document.title = `Tower Talk - ${username}`;
+            document.getElementById('top-txt').textContent = `Posts by ${username}`
+
+            // Call into cgi-bin file to get a list of posts
+            fetch(
+                `https://moontowercomputer.club/~${username}/cgi-bin/towertalk.bin`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain'
+                    },
+                    body: '2'
+                }
+            ).then(response => response.json())
+            .then(posts => {
+                posts.sort((a, b) => a['index'] - b['index']);
+                return posts;
+            }).then(posts => {
+                let post_ls = document.getElementById('post-list')
+                for (const post of posts) {
+                    let post_li = document.createElement('li');
+                    let post_a = document.createElement('a');
+                    post_a.href =
+                    `https://moontowercomputer.club/~${username}/towertalk/posts/${post['index']}`;
+                    post_a.textContent = post['title'];
+                    post_li.appendChild(post_a);
+                    post_ls.appendChild(post_li);
+                }
+            });
+
+            // On submit
+            document.getElementById('new-post').addEventListener('submit', function(e) {
+                e.preventDefault(); // Stop actual submission
+                const form_data = new FormData(this);
+                const data = Object.fromEntries(form_data.entries());
+                const req_body =
+                    `0{${data['post_title']}}{${data['post_body']}}{${data['post_pword']}}`
+                fetch(
+                    `https://moontowercomputer.club/~${username}/cgi-bin/towertalk.bin`,
+                    {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'text/plain'
+                        },
+                        body: req_body
+                    }
+                ).then(response => {
+                    if (response.status != 200) {
+                        alert(`Error: ${response.status} ${response.statusText}`);
+                    }
+                    location.reload(this);
+                });
+            });
+        </script>
+    </body>
+</html>
