@@ -32,7 +32,7 @@ Once a post exists and a user can visit it, that user can contribute to the conv
 
 To add a comment:
 
-- Visit the post you want to comment on: `https://moontowercomputer.club/~<your username>/towertalk/posts/<id>`
+- Visit the post you want to comment on: `https://moontowercomputer.club/~<poster's username>/towertalk/posts/<id>`
 - Click "Add Comment"
 - Enter a Markdown body, your username, and your password
 - Click submit
@@ -40,7 +40,7 @@ To add a comment:
 Under the hood, this will call the `towertalk.bin` file in the *commenter's* cgi-bin directory which will then:
 
 - Verify their identity
-- Create a folder `~/public/towertalk/comments/<id>`
+- Create a folder `~/public/towertalk/comments/<poster's username>/<id>`
 - Create a file called `COMMENT.<number>.md` with the content of the comment in it
    + `<number>` is simply there to give a unique file name in case there are multiple files. It's just a counter
 

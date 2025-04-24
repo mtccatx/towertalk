@@ -137,8 +137,6 @@ cmd_err_t cmd__make_comment(const cmd_comment_t *const comment_data) {
     }
     char fname[BUFF_SIZE] = "";
 
-
-
     // Create the containing folders if they don't exist
     struct stat st = { 0 };
     int fname_size = sprintf(fname, "/home/%s/public/", username);
@@ -225,6 +223,9 @@ cmd_err_t cmd__make_comment(const cmd_comment_t *const comment_data) {
 }
 
 cmd_err_t cmd__get_posts(cmd_post_ls_t *ref_posts) {
+    if (!ref_posts) {
+        return CMDERR_INTERNAL;
+    }
     char *username = getenv("USER");
     if (!username) {
         return CMDERR_INTERNAL;
@@ -350,5 +351,61 @@ cmd_err_t cmd__get_users(user_ls_t *ref_users) {
         }
     }
     fclose(passwd);
+    return CMDERR_NONE;
+}
+
+cmd_err_t cmd__get_comments(cmnt_ls_t *ref_cmnts, const cmd_cmnt_lookup_t *const cmnt_lookup_data) {
+    if (!ref_cmnts || !cmnt_lookup_data) {
+        return CMDERR_INTERNAL;
+    }
+    char *username = getenv("USER");
+    if (!username) {
+        return CMDERR_INTERNAL;
+    }
+    char fname[BUFF_SIZE];
+    size_t fname_size = sprintf(
+        fname,
+        "/home/%s/public/towertalk/comments/%s/%s",
+        username, cmnt_lookup_data->post_user, cmnt_lookup_data->post_id
+    );
+    if (fname_size < 0 || fname_size >= BUFF_SIZE) {
+        return CMDERR_INTERNAL;
+    }
+    DIR *dir = opendir(fname);
+    if (!dir) {
+        // No posts; not an error, just ref_post is empty
+        return CMDERR_NONE;
+    }
+    struct dirent *entry = NULL;
+    while ((entry = readdir(dir))) {
+        if (entry->d_type == DT_REG) {
+            // Get comment index
+            size_t index = 0;
+            if (sscanf(entry->d_name, "COMMENT.%lu.md", &index) != 1) {
+                continue;
+            }
+
+            // Add to list
+            if (!ref_cmnts->cmnt_ids) {
+                ref_cmnts->cmnt_ids = malloc(sizeof(size_t));
+                if (!ref_cmnts->cmnt_ids) {
+                    return CMDERR_INTERNAL;
+                }
+                ref_cmnts->cmnt_ids[0] = index;
+                ref_cmnts->cmnts_len = 1;
+            } else {
+                ref_cmnts->cmnt_ids = realloc(
+                    ref_cmnts->cmnt_ids,
+                    sizeof(size_t) * (ref_cmnts->cmnts_len + 1)
+                );
+                if (!ref_cmnts->cmnt_ids) {
+                    return CMDERR_INTERNAL;
+                }
+                ref_cmnts->cmnt_ids[ref_cmnts->cmnts_len] = index;
+                ref_cmnts->cmnts_len++;
+            }
+        }
+    }
+    closedir(dir);
     return CMDERR_NONE;
 }

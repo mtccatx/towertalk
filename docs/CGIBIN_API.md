@@ -21,10 +21,9 @@ The commands are as follows:
    4. Commenter's user password (under `~/.config/towertalk`)
 - `2` - Return list of post titles and indices for the host user. No args
 - `3` - Return a list of users on the system. Used by front-end for finding comments
-- `4` - Return a list of comments for a user's post by another (or the same) user
-   1. Username of the user you want to read the comments of
-   2. Username of the user who posted the post
-   3. Id of the post
+- `4` - Return a list of comment ids for a user's post by another (or the same) user
+   1. Poster's user name
+   2. Post Id
 
 ## Testing
 

@@ -15,7 +15,7 @@
             "cwd": "${fileDirname}",
             "environment": [
                 { "name": "REQUEST_METHOD", "value": "POST" },
-                { "name": "CONTENT_LENGTH", "value": "43" },
+                { "name": "CONTENT_LENGTH", "value": "11" },
             ],
             "externalConsole": false,
             "MIMode": "gdb",

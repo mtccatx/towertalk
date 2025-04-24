@@ -45,6 +45,18 @@ typedef struct {
     char **users;
 } user_ls_t;
 
+// Represent the data to look up comments
+typedef struct {
+    char *post_user;
+    char *post_id;
+} cmd_cmnt_lookup_t;
+
+// List of user comments
+typedef struct {
+    size_t cmnts_len;
+    size_t *cmnt_ids;
+} cmnt_ls_t;
+
 // Create a new post from the request data
 cmd_err_t cmd__make_post(const cmd_post_t *const post_data);
 
@@ -56,3 +68,6 @@ cmd_err_t cmd__get_posts(cmd_post_ls_t *ref_post);
 
 // Read users via /etc/passwd and return an array of strings
 cmd_err_t cmd__get_users(user_ls_t *ref_users);
+
+// Look up the comments for a specific post
+cmd_err_t cmd__get_comments(cmnt_ls_t *ref_cmnts, const cmd_cmnt_lookup_t *const cmnt_lookup_data);
