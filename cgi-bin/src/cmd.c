@@ -209,3 +209,49 @@ cmd_err_t cmd__get_posts(cmd_post_ls_t *ref_posts) {
     closedir(dir);
     return CMDERR_NONE;
 }
+
+cmd_err_t cmd__get_users(user_ls_t *ref_users) {
+    if (!ref_users) {
+        return CMDERR_INTERNAL;
+    }
+    FILE *passwd = fopen("/etc/passwd", "r");
+    if (!passwd) {
+        return CMDERR_INTERNAL;
+    }
+    char line[BUFF_SIZE] = "";
+    char username[BUFF_SIZE] = "";
+    size_t id = 0;
+    while (fgets(line, sizeof(line), passwd)) {
+        char *first_x = strchr(line, ':');
+        if (!first_x) {
+            continue;
+        }
+        strncpy(username, line, (size_t) (first_x - line));
+        username[(size_t) (first_x - line)] = '\0';
+        size_t found_items = sscanf(first_x, ":x:%lu:", &id);
+        if (found_items == 1 && id > 1000 && id < 2000) {
+            if (!ref_users->users) {
+                ref_users->users = malloc(sizeof(char *));
+                if (!ref_users->users) {
+                    return CMDERR_INTERNAL;
+                }
+                ref_users->users_len = 1;
+            } else {
+                ref_users->users = realloc(
+                    ref_users->users,
+                    sizeof(char *) * (ref_users->users_len + 1)
+                );
+                if (!ref_users->users) {
+                    return CMDERR_INTERNAL;
+                }
+                ref_users->users_len++;
+            }
+            size_t name_len = strlen(username);
+            ref_users->users[ref_users->users_len - 1] = malloc(name_len + 1);
+            strcpy(ref_users->users[ref_users->users_len - 1], username);
+            ref_users->users[ref_users->users_len - 1][name_len] = '\0';
+        }
+    }
+    fclose(passwd);
+    return CMDERR_NONE;
+}

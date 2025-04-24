@@ -37,6 +37,12 @@ typedef struct {
     cmd_post_meta_t *posts;
 } cmd_post_ls_t;
 
+// A list of users
+typedef struct {
+    size_t users_len;
+    char **users;
+} user_ls_t;
+
 // Create a new post from the request data
 cmd_err_t cmd__make_post(const cmd_post_t *const post_data);
 
@@ -45,3 +51,6 @@ cmd_err_t cmd__make_comment(const cmd_comment_t *const comment_data);
 
 // Read posts under ~/public/towertalk/posts/*/* and fill a list
 cmd_err_t cmd__get_posts(cmd_post_ls_t *ref_post);
+
+// Read users via /etc/passwd and return an array of strings
+cmd_err_t cmd__get_users(user_ls_t *ref_users);

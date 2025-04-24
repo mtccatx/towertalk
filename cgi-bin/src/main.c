@@ -74,6 +74,7 @@ static int run_cmd(const req_t *const ref_req) {
     size_t resp_len = 0;
     char int_buff[1024] = "";
     size_t append_size = 0;
+    user_ls_t users = { 0 };
     switch (ref_req->cmd) {
         case REQCMD_MAKE_POST:
             post.title = ref_req->args[0];
@@ -94,19 +95,18 @@ static int run_cmd(const req_t *const ref_req) {
                 resp = malloc(resp_len + 1);
                 resp[0] = '[';
                 for (size_t i = 0; i < posts.posts_len; i++) {
+                    sprintf(int_buff, "%lu", posts.posts[i].index);
                     append_size =
                         strlen(posts.posts[i].title) + strlen(int_buff)
                             + strlen("{\"index\":,\"title\":\"\"}")
                             + (i == 0 ? 0 : 1);
-                    sprintf(int_buff, "%lu", posts.posts[i].index);
-                    resp = realloc(resp, resp_len + (i == 0 ? 1 : 0) + 1 + append_size);
+                    resp = realloc(resp, resp_len + 1 + append_size);
                     if (i == 0) {
                         sprintf(
                             resp + resp_len,
                             "{\"index\":%s,\"title\":\"%s\"}",
                             (char *) int_buff, posts.posts[i].title
                         );
-                        resp_len++;
                     } else {
                         sprintf(
                             resp + resp_len,
@@ -128,8 +128,49 @@ static int run_cmd(const req_t *const ref_req) {
                     }
                     free(posts.posts);
                 }
-                exit(0); // Return success ourselves
+                exit(0); // Return success ourselves bc we've already sent the response
             }
+            break;
+        case REQCMD_USERS:
+            cmd_err = cmd__get_users(&users);
+            if (cmd_err == CMDERR_NONE) {
+                resp_len = 1;
+                resp = malloc(resp_len + 1);
+                resp[0] = '[';
+                for (size_t i = 0; i < users.users_len; i++) {
+                    append_size = strlen(users.users[i]) + strlen("\"\"") + (i == 0 ? 0 : 1);
+                    resp = realloc(resp, resp_len + 1 + append_size);
+                    if (i == 0) {
+                        sprintf(resp + resp_len, "\"%s\"", users.users[i]);
+                    } else {
+                        sprintf(resp + resp_len, ",\"%s\"", users.users[i]);
+                    }
+                    resp_len += append_size;
+                }
+                resp = realloc(resp, resp_len + 1 + 1);
+                resp_len++;
+                resp[resp_len - 1] = ']';
+                resp[resp_len] = '\0';
+                request__respond(RESPCODE_OK, resp);
+                free(resp);
+                if (users.users_len > 0) {
+                    for (size_t i = 0; i < users.users_len; i++) {
+                        free(users.users[i]);
+                    }
+                    free(users.users);
+                }
+                exit(0); // Return success ourselves bc we've already sent the response
+            }
+            break;
+        case REQCMD_COMMENTS:
+            request__respond(
+                RESPCODE_OK,
+                "["
+                    "{\"index\":2,\"body\":\"test2\"}"
+                    ",{\"index\":0,\"body\":\"test1\"}"
+                "]"
+            );
+            exit(0);
             break;
         default:
             request__respond(RESPCODE_CLNTERR_BAD_REQ, "Invalid command requested.");

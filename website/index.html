@@ -48,10 +48,11 @@
                 }
             ).then(response => response.json())
             .then(posts => {
-                posts.sort((a, b) => a['index'] - b['index']);
-                return posts;
+                new_posts = posts;
+                new_posts.sort((a, b) => a['index'] - b['index']);
+                return new_posts;
             }).then(posts => {
-                let post_ls = document.getElementById('post-list')
+                let post_ls = document.getElementById('post-list');
                 for (const post of posts) {
                     let post_li = document.createElement('li');
                     let post_a = document.createElement('a');

@@ -18,7 +18,8 @@ The commands are as follows:
    1. Post Id
    2. Comment body
    3. Commenter's user password (under `~/.config/towertalk`)
-- `2` - Return list of Post titles and indices. No args
+- `2` - Return list of Post titles and indices for the host user. No args
+- `3` - Return a list of users on the system. Used by front-end for finding comments
 
 ## Testing
 

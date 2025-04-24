@@ -31,6 +31,8 @@ typedef enum {
     REQCMD_MAKE_POST,
     REQCMD_MAKE_COMMENT,
     REQCMD_POSTS,
+    REQCMD_USERS,
+    REQCMD_COMMENTS,
     REQCMD_COUNT
 } req_cmd_t;
 
