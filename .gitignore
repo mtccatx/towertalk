@@ -6,3 +6,4 @@ obj/
 
 # Packaging (Create a temp folder)
 towertalk-*/
+*.tar.gz
