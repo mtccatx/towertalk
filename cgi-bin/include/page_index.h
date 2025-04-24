@@ -41,7 +41,7 @@ static char *PAGE_INDEX =
     "        <!-- Pull content and handle submission and what not -->\n"
     "        <script>\n"
     "            // Get info about the current user and post\n"
-    "            const version = " VERSION ";\n"
+    "            const version = '" VERSION "';\n"
     "            const path = window.location.pathname;\n"
     "            const match = path.match(/^\\/~([^/]+)\\/towertalk\\/posts\\/([0-9]+)/);\n"
     "            const username = match ? match[1] : '<user>';\n"
