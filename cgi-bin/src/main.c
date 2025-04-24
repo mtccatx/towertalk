@@ -166,8 +166,8 @@ static int run_cmd(const req_t *const ref_req) {
             request__respond(
                 RESPCODE_OK,
                 "["
-                    "{\"index\":2,\"body\":\"test2\"}"
-                    ",{\"index\":0,\"body\":\"test1\"}"
+                    "{\"index\":2,\"body\":\"# Title\\n\\nHello, world!\"}"
+                    ",{\"index\":0,\"body\":\"# Title\\n\\n## Subtitle\\n\\nHello\"}"
                 "]"
             );
             exit(0);

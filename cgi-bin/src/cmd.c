@@ -229,7 +229,7 @@ cmd_err_t cmd__get_users(user_ls_t *ref_users) {
         strncpy(username, line, (size_t) (first_x - line));
         username[(size_t) (first_x - line)] = '\0';
         size_t found_items = sscanf(first_x, ":x:%lu:", &id);
-        if (found_items == 1 && id > 1000 && id < 2000) {
+        if (found_items == 1 && id >= 1000 && id < 2000) {
             if (!ref_users->users) {
                 ref_users->users = malloc(sizeof(char *));
                 if (!ref_users->users) {
